@@ -1,0 +1,2 @@
+achtung wen drink chart wechselt, dann muss man zuerst das das backup .txt speichern und nach dem laden
+auch neu laden um die richtigen preise zu haben.

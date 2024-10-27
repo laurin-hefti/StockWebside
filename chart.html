@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <title> Drinks </title>
+
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
+    <style>
+        :root {
+            --text-color: white;
+            --background-color: black;
+            --seconds-for-animation: 9s;
+            --start-border: -20%;
+            --end-border: 120%;
+
+            --line-width: 2;
+            --line-color: "";
+        }
+        
+        h1 {
+            color: var(--text-color);
+            text-align: center;
+        }
+
+        h2{
+            color: var(--text-color);
+            text-align: center;
+        }
+
+        #drinkList {
+            display: flex;
+            justify-content: center;
+            /*flex-direction: center; */
+        }
+        
+        h4 {
+            color: var(--text-color);
+            text-align: right;
+            margin: 20px;
+        }
+
+        #staticDiv{
+            position: fixed;
+            bottom: 0px;
+            left: 0px;
+            width: 100%;
+            height: 60px;
+            background-color: black;
+            color:white;
+            white-space: nowrap;
+        }
+
+        .moveDiv{
+            position: absolute;
+            bottom: 0px;
+            right: 0%;
+            animation: move var(--seconds-for-animation) linear infinite;
+        }
+
+        @keyframes move {
+            from {
+                right: var(--start-border);
+            } to {
+                right: var(--end-border);
+            }
+        }
+    </style>
+
+</head>
+<body style = "background-color: var(--background-color);">
+
+    <h1 class="container mt-5">Drink chart</h1>
+
+    <div class="container mt-5">
+        <div id="linechart" class="my-4"></div>
+    </div>
+
+    <h2>
+        Getränke Liste
+    </h2>
+
+    <div id="drinkList"></div>
+    <div id="staticDiv"></div>
+
+    <script>
+        const root = document.documentElement;
+
+        //for the moving things
+        const init_animated_messages = false;
+        let listmovdiv = [];
+        let start_border = -20;
+        let end_border = 120;
+        let time_to_travel = 9;
+
+        let stylemode = 1;
+
+        const eventSorce = new EventSource("/events");
+        eventSorce.onmessage = function(data){
+            if (data.data == "reload"){
+                location.reload();
+            }
+            if (data.data == "changeStyle"){
+                changeStyleMode();
+                updateChart();
+            }
+        }
+
+        let text_color = getComputedStyle(root).getPropertyValue("--text-color");
+        let background_color = getComputedStyle(root).getPropertyValue("--background-color");
+        // setup the diagram
+        var stockData = {};
+
+        var layout = {
+            //title: "Preise",
+            xaxis: {title: "Zeit", color: text_color},
+            yaxis: {title: "Price", color: text_color},
+
+            plot_bgcolor: background_color,
+            paper_bgcolor: background_color,
+
+            font: {color: text_color}
+        };
+
+        var config = {
+            displayModeBar: false
+        };
+
+        Plotly.newPlot("linechart", [], layout, config);
+
+        function updateChart(){
+            let lineWith = getComputedStyle(root).getPropertyValue("--line-width");
+            let lineColor = getComputedStyle(root).getPropertyValue("--line-color");
+
+            var traces = [];
+            for(var stock in stockData){
+                traces.push({
+                    x: stockData[stock].dates,
+                    y: stockData[stock].prices,
+                    type: "scatter",
+                    mode: "line",
+                    name: stock,
+                    line: {width: lineWith,
+                        color: lineColor
+                    }
+                });
+            }
+
+            Plotly.react("linechart", traces, layout, config);
+        }
+
+        function changeStyleMode(){
+            if (stylemode == 1){
+                stylemode = 2;
+                document.documentElement.style.setProperty("--line-width", 5);
+                document.documentElement.style.setProperty("--line-color", "red");
+            }
+            else {
+                document.documentElement.style.setProperty("--line-width", 2);
+                document.documentElement.style.setProperty("--line-color", "");
+            }
+        }
+
+        //get data from the stockmarket server and put it in the stockData
+        async function setData(){
+            await fetch("http://localhost:3001").then(response => {
+                if (!response.ok) {
+                    
+                } else {
+                    return response.json();
+                }
+            }).then(data => {
+                stockData = {};
+                let drinksListDiv = document.getElementById("drinkList");
+
+                data.drinks.forEach(drink => {
+                    stockData[drink.name] = {name: drink.name, prices: drink.prices, times: drink.times};
+                    
+                    let drinkDiv = document.createElement("h4");
+                    drinkDiv.textContent = drink.name + ": " + drink.prices[drink.prices.length - 1] + " Fr.";
+                    drinksListDiv.appendChild(drinkDiv);
+
+                    let copyDiv = document.createElement("h4");
+                    copyDiv.textContent = drink.name + ": " + drink.prices[drink.prices.length - 1] + " Fr.";
+
+                    //for the moving messages
+                    listmovdiv.push(copyDiv);
+                    start_border -= 10;
+                    end_border += 10;
+                    time_to_travel += 0.5;
+                });
+
+                document.documentElement.style.setProperty("--start-border", start_border.toString() + "%");
+                document.documentElement.style.setProperty("--end-border", end_border.toString() + "%");
+                document.documentElement.style.setProperty("--seconds-for-animation", time_to_travel.toString() + "s");
+
+                updateChart();
+            });
+        }
+
+        function delay(ms){
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+
+        setData().then(async ()=>{
+            //for the moving messages
+            if (init_animated_messages){
+                for (let element of listmoürvdiv){
+                    await delay(700);
+                    element.classList.add("moveDiv");
+                    document.getElementById("staticDiv").appendChild(element);
+                }
+            }
+        });
+
+        //idee damit sich die seite selber neu lädt, wird ez aber durch den event stream gemacht
+        //es würde auch gehen indem man die die setData funkion aufruft
+        const run = false;
+        while (run){
+            setData();
+            listmovdiv = []
+
+            setTimeout(() => {
+
+            }, 60000); //one second
+        }
+    </script>
+</body>
