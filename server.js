@@ -53,7 +53,7 @@ function broadCastCartSides(data){
 }
 
 const chartPort = 3000;
-chartserver.listen(chartPort, ()=> {
+chartserver.listen(chartPort, "0.0.0.0", ()=> {
     console.log("chart server running");
 });
 
@@ -103,7 +103,7 @@ function broadCastBarSides(data){
 }
 
 const barport = 3002;
-barserver.listen(barport, ()=> {
+barserver.listen(barport,"0.0.0.0", ()=> {
     console.log("bar server running");
 });
 
@@ -281,7 +281,7 @@ const scserver = http.createServer(async (req, res) => {
 });
 
 const scserverPort = 3001;
-scserver.listen(scserverPort, () => {
+scserver.listen(scserverPort, "0.0.0.0", () => {
     console.log("mcserver running");
 });
 
@@ -349,6 +349,6 @@ const barresponsServer = http.createServer(async (req, res) => {
     }
 });
 
-barresponsServer.listen(3003, () => {
+barresponsServer.listen(3003, "0.0.0.0", () => {
     console.log("barrserver running");
 });

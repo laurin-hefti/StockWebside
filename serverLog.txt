@@ -72,3 +72,8 @@ reaload Drink List
 change Drink Path : C:/Users/l.hefti/Desktop/StockWebside/stocks2.txt
 change Drink Path : C:/Users/l.hefti/Desktop/StockWebside/stocks.txt
 Relative Price Mode : true
+server init
+server init
+server init
+server init
+server init

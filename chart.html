@@ -30,14 +30,20 @@
 
         #drinkList {
             display: flex;
+            flex-wrap: wrap;
             justify-content: center;
+            width: 80%;
+            margin: 0 auto;
             /*flex-direction: center; */
         }
         
         h4 {
             color: var(--text-color);
-            text-align: right;
+            text-align: center;
+            flex: 1 1 8%;
             margin: 20px;
+            min-width: 160px;
+            /*margin-right: 40px;*/
         }
 
         #staticDiv{
@@ -69,8 +75,6 @@
 
 </head>
 <body style = "background-color: var(--background-color);">
-
-    <h1 class="container mt-5">Drink chart</h1>
 
     <div class="container mt-5">
         <div id="linechart" class="my-4"></div>
