@@ -4,11 +4,11 @@ from selenium.webdriver.common.keys import Keys
 import time
 from random import randint
 
-driver_path = "C:/Users/l.hefti/Downloads/edgedriver_win64/msedgedriver.exe"
+driver_path = "msedgedriver.exe"
 driver = webdriver.Edge(driver_path)
 
 """
-driver.get("http://localhost:3002")
+driver.get("ek-09:3002")
 
 time.sleep(2);
 
@@ -45,7 +45,7 @@ def run():
 
 for _ in range(200):
     try:
-        driver.get("http://localhost:3002")
+        driver.get("ek-09:3002")
 
         time.sleep(2);
 

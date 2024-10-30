@@ -87,14 +87,14 @@
         </div>
 
         <div id="chartSide">
-            <iframe src="http://localhost:3000" width="100%" height="1000px"></iframe>
+            <iframe src="ek-09:3000" width="100%" height="1000px"></iframe>
         </div>
 
     </div>
 
     <script>
         async function sendToStockServer(input_data, func){
-            await fetch("http://localhost:3003", {
+            await fetch("ek-09:3003", {
                 method: "POST",
                 headers: {"Content-Type": "application/json"},
                 body: JSON.stringify(input_data)
@@ -226,7 +226,7 @@
             });
 
             async function setDrinkData(){
-                await fetch("http://localhost:3001").then(response => {
+                await fetch("ek-09:3001").then(response => {
                     if (!response.ok) {
                         console.log("error with receaving data form 3001");
                         alert("error from the server with data from port 3001");

@@ -6,7 +6,7 @@ const { spawn } = require("child_process");
 
 let chartServerClients = [];
 
-const chart_path = "C:/Users/l.hefti/Desktop/StockWebside/chart.html";
+const chart_path = "chart.html";
 
 const chartserver = http.createServer((req, res) => {
     if (req.url === "/events"){
@@ -61,7 +61,7 @@ chartserver.listen(chartPort, "0.0.0.0", ()=> {
 //barsiede server setup --------------------------------------------------------------------------------
 let barSErverClients = [];
 
-const bar_location = "C:/Users/l.hefti/Desktop/StockWebside/bar.html";
+const bar_location = "bar.html";
 
 const barserver = http.createServer((req, res) => {
 
@@ -111,7 +111,7 @@ barserver.listen(barport,"0.0.0.0", ()=> {
 //stockcenter program setup ----------------------------------------------------------------------------
 
 const surce_node = "node.exe"
-const stock_center = spawn(surce_node, ["C:/Users/l.hefti/Desktop/StockWebside/stockcenter.js"]);
+const stock_center = spawn(surce_node, ["stockcenter.js"]);
 
 let init_stock_c = false;
 stock_center.stdout.on("data", (data) => {

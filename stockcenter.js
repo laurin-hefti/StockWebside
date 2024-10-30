@@ -21,7 +21,7 @@ function round50(value){
 }
 
 function log(text){
-	fs2.appendFileSync("C:/Users/l.hefti/Desktop/StockWebside/serverLog.txt", text + "\n");
+	fs2.appendFileSync("serverLog.txt", text + "\n");
 }
 
 // ------------------------------ Drink class -------------------------------------------------------
@@ -39,7 +39,7 @@ class Drink {
 		this.minPrice = minPrice;
 		this.targetPrice = targetPrice;
 
-		if (maxPrice < minPrice){console.log("error min price is bigger than max price");}
+		if (maxPrice < minPrice){console.log("error min price is bigger than max price " + minPrice +  " " + maxPrice);}
 
 		this.buffer_next_count = 0;
 
@@ -194,9 +194,9 @@ class Drink {
 	}
 }
 
-const SM_p1 = "C:/Users/l.hefti/Desktop/StockWebside/stocks.txt";
-const SM_p2 = "C:/Users/l.hefti/Desktop/StockWebside/stocks2.txt";
-const SM_backup = "C:/Users/l.hefti/Desktop/StockWebside/backup.txt";
+const SM_p1 = "stocks.txt";
+const SM_p2 = "stocks2.txt";
+const SM_backup = "backup.txt";
 const SM_time_buffer_size = 20;
 
 class StockMarket {
@@ -217,11 +217,13 @@ class StockMarket {
 
 		data = data.replace(" ", "");
 		data = data.replace("\r", "");
+		data = data.replace("\t", "");
 
 		let lines = data.split("\n");
 
 		for (let line of lines){
 			let fragments = line.split(",");
+			//console.log(fragments)
 
 			// name, startprice, minprice, maxprice, targetprice
 			this.stocks.push(new Drink(fragments[0], 
@@ -239,6 +241,8 @@ class StockMarket {
 		let data = await fs.readFile(SM_backup, "utf8");
 
 		data = data.replace(" ", "");
+		data = data.replace("\t", "");
+
 		let lines = data.split("\n");
 
 		if (lines.length < 1 ){
@@ -275,6 +279,7 @@ class StockMarket {
 
 		data = data.replace(" ", "");
 		data = data.replace("\r", "");
+		data = data.replace("\t", "");
 
 		let lines = data.split("\n");
 

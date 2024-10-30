@@ -1,0 +1,9 @@
+all:
+    -source of the computer
+    -source of the files
+
+server:
+    -path to node.exe
+
+testprogram: 
+    -source of browser
