@@ -25,7 +25,7 @@ function log(text){
 }
 
 // ------------------------------ Drink class -------------------------------------------------------
-const drink_num_to_integrate = 3;
+const drink_num_to_integrate = 5;
 const drink_buffersize = 20;
 const drink_rel_size_of_upper_lower_gap = 5;
 const drink_speed_to_target_privce = 5; 		//higher means slower
@@ -81,7 +81,7 @@ class Drink {
 		let upper_boundery = this.buffer.length;
 
 		for(let i = lower_boundery; i < upper_boundery; i++){
-			sum += this.buffer[i];
+			sum += this.buffer[i] * (upper_boundery/i);				//may not
 		}
 
 		let numtodiv = upper_boundery-lower_boundery;
@@ -433,7 +433,7 @@ class StockMarket {
 
 		for (let drink of this.stocks){
 			data.drinks.push({name: drink.name, 
-				prices: drink.price_buffer, 
+				prices: drink.price_buffer.slice(-10), 
 				times: this.times});
 		}
 
