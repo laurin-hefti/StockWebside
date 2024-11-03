@@ -17,7 +17,7 @@ function round(num, fac){
 }
 
 function round50(value){
-	return Math.round(value * 200) / 200;
+	return Math.round(value * 2) / 2;
 }
 
 function log(text){
