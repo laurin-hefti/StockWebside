@@ -81,7 +81,7 @@ class Drink {
 		let upper_boundery = this.buffer.length;
 
 		for(let i = lower_boundery; i < upper_boundery; i++){
-			sum += this.buffer[i] * ((i+1)/(upper_boundery+1));				//may not
+			sum += this.buffer[i] ;// * ((i+1)/(upper_boundery+1));				//may not
 		}
 
 		let numtodiv = upper_boundery-lower_boundery;

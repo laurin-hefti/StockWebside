@@ -98,9 +98,6 @@
         let time_to_travel = 9;
 
         let stylemode = 1;
-        if (localStorage.getItem("SWstyle") == null){       //check if returns null
-            localStorage.setItem("SWstyle", 1);
-        }
 
         let chartDispalyMode = true;
 
@@ -111,7 +108,6 @@
             }
             if (data.data == "changeStyle"){
                 changeStyleMode();
-                updateChart();
             }
         }
 
@@ -171,6 +167,7 @@
                 document.documentElement.style.setProperty("--line-color", "");
                 localStorage.setItem("SWstyle", 1);
             }
+            updateChart();
         }
 
         function map(value, inMin, inMax, outMin, outMax) {
@@ -181,7 +178,7 @@
             let copy = JSON.parse(JSON.stringify(JSONdata));
 
             let i = 0;
-            for (let drink of JSONdata.drinks){
+            for (let drink of JSONdata){
                 let max = Math.max(...drink.prices);
                 let min = Math.min(...drink.prices);
 
@@ -191,7 +188,7 @@
                     newPriceList.push(map(p,min,max, 0,1));
                 }
 
-                copy.drinks[i].prices = newPriceList;
+                copy[i].prices = newPriceList;
 
                 i += 1;
             }
@@ -251,10 +248,15 @@
         }
 
         setData().then(async ()=>{
+            if (localStorage.getItem("SWstyle") == null){       //check if returns null
+                localStorage.setItem("SWstyle", 1);
+            }
             let oldStyle = localStorage.getItem("SWstyle");
-            changeStyleMode();
-            localStorage.setItem("SWstyle", oldStyle);
-            stylemode = oldStyle;
+            if(oldStyle != stylemode){
+                changeStyleMode();
+                localStorage.setItem("SWstyle", oldStyle);
+                stylemode = oldStyle;
+            }
 
             //for the moving messages
             if (init_animated_messages){

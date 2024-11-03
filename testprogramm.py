@@ -1,11 +1,13 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.edge.service import Service
 import time
 from random import randint
 
-driver_path = "msedgedriver.exe"
-driver = webdriver.Edge(driver_path)
+driver_path = "C:/BAR/edgedriver_win64/msedgedriver.exe"
+service = Service(driver_path)
+driver = webdriver.Edge(service=service)
 
 """
 driver.get("ek-09:3002")
@@ -19,7 +21,7 @@ drinks = drink_list.find_elements(By.XPATH, "./*")
 drinkButtons = [drink.find_elements(By.XPATH, "./*") for drink in drinks]
 """
 
-formula_for_ev = lambda x: 30
+formula_for_ev = lambda x: 10
 t = 0
 
 
@@ -40,8 +42,17 @@ def run():
 
     t += 1
 
-    time.sleep(20)
+    time.sleep(30)
 
+driver.get("http://192.168.1.200:3002")
+
+time.sleep(2);
+
+drink_list = driver.find_element(By.ID, "drinkOptionList");
+
+drinks = drink_list.find_elements(By.XPATH, "./*")
+
+drinkButtons = [drink.find_elements(By.XPATH, "./*") for drink in drinks]
 
 for _ in range(200):
     try:
