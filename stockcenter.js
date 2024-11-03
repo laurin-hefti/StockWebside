@@ -17,7 +17,7 @@ function round(num, fac){
 }
 
 function round50(value){
-	return Math.round(value * 20) / 20;
+	return Math.round(value * 200) / 200;
 }
 
 function log(text){
@@ -81,7 +81,7 @@ class Drink {
 		let upper_boundery = this.buffer.length;
 
 		for(let i = lower_boundery; i < upper_boundery; i++){
-			sum += this.buffer[i] * (upper_boundery/i);				//may not
+			sum += this.buffer[i] * ((i+1)/(upper_boundery+1));				//may not
 		}
 
 		let numtodiv = upper_boundery-lower_boundery;
@@ -433,7 +433,7 @@ class StockMarket {
 
 		for (let drink of this.stocks){
 			data.drinks.push({name: drink.name, 
-				prices: drink.price_buffer.slice(-10), 
+				prices: drink.price_buffer, 
 				times: this.times});
 		}
 

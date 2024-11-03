@@ -98,6 +98,11 @@
         let time_to_travel = 9;
 
         let stylemode = 1;
+        if (localStorage.getItem("SWstyle") == null){       //check if returns null
+            localStorage.setItem("SWstyle", 1);
+        }
+
+        let chartDispalyMode = true;
 
         const eventSorce = new EventSource("/events");
         eventSorce.onmessage = function(data){
@@ -158,11 +163,40 @@
                 stylemode = 2;
                 document.documentElement.style.setProperty("--line-width", 5);
                 document.documentElement.style.setProperty("--line-color", "red");
+                localStorage.setItem("SWstyle", 2);
             }
             else {
+                stylemode = 1;
                 document.documentElement.style.setProperty("--line-width", 2);
                 document.documentElement.style.setProperty("--line-color", "");
+                localStorage.setItem("SWstyle", 1);
             }
+        }
+
+        function map(value, inMin, inMax, outMin, outMax) {
+		    return outMin + ( (value - inMin) * (outMax - outMin) ) / (inMax - inMin);
+	    }
+
+        function setRelativPrice(JSONdata){
+            let copy = JSON.parse(JSON.stringify(JSONdata));
+
+            let i = 0;
+            for (let drink of JSONdata.drinks){
+                let max = Math.max(...drink.prices);
+                let min = Math.min(...drink.prices);
+
+                let newPriceList = [];
+
+                for(let p of drink.prices){
+                    newPriceList.push(map(p,min,max, 0,1));
+                }
+
+                copy.drinks[i].prices = newPriceList;
+
+                i += 1;
+            }
+
+            return copy;
         }
 
         //get data from the stockmarket server and put it in the stockData
@@ -177,9 +211,18 @@
                 stockData = {};
                 let drinksListDiv = document.getElementById("drinkList");
 
+                let relatiPrices = setRelativPrice(data.drinks);
+                let i = 0;
+
                 data.drinks.forEach(drink => {
-                    stockData[drink.name] = {name: drink.name, prices: drink.prices, times: drink.times};
-                    
+                    if (chartDispalyMode){
+                        stockData[relatiPrices[i].name] = {name: relatiPrices[i].name, prices: relatiPrices[i].prices, times: relatiPrices[i].times};
+                        i += 1;
+                    }
+                    else {
+                        stockData[drink.name] = {name: drink.name, prices: drink.prices, times: drink.times};
+                    }
+
                     let drinkDiv = document.createElement("h4");
                     drinkDiv.textContent = drink.name + ": " + drink.prices[drink.prices.length - 1] + " Fr.";
                     drinksListDiv.appendChild(drinkDiv);
@@ -198,6 +241,7 @@
                 document.documentElement.style.setProperty("--end-border", end_border.toString() + "%");
                 document.documentElement.style.setProperty("--seconds-for-animation", time_to_travel.toString() + "s");
 
+
                 updateChart();
             });
         }
@@ -207,6 +251,11 @@
         }
 
         setData().then(async ()=>{
+            let oldStyle = localStorage.getItem("SWstyle");
+            changeStyleMode();
+            localStorage.setItem("SWstyle", oldStyle);
+            stylemode = oldStyle;
+
             //for the moving messages
             if (init_animated_messages){
                 for (let element of listmoürvdiv){
