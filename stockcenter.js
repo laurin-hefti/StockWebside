@@ -27,7 +27,7 @@ function log(text){
 // ------------------------------ Drink class -------------------------------------------------------
 const drink_num_to_integrate = 5;
 const drink_buffersize = 20;
-const drink_rel_size_of_upper_lower_gap = 5;
+const drink_rel_size_of_upper_lower_gap = 5;	//rela higher means lower
 const drink_speed_to_target_privce = 5; 		//higher means slower
 const drink_price_buffer_size = 20;
 
@@ -85,7 +85,7 @@ class Drink {
 		}
 
 		let numtodiv = upper_boundery-lower_boundery;
-		if (numtodiv == 0){numtodiv = 1;}
+		if (numtodiv <= 0){numtodiv = 1;}
 
 		let s = sum / numtodiv;
 		return s;
@@ -133,6 +133,7 @@ class Drink {
 	getPrice(){
 		
 		let stockrequest = this.getBufferValue();
+		log(stockrequest); 		//delet this
 
 		if (stockrequest < 0){
 			stockrequest = 0;
