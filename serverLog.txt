@@ -90,3 +90,8 @@ server init
 server init
 server init
 server init
+server init
+server init
+server init
+Relative Price Mode : true
+Relative Price Mode : false

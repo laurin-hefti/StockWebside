@@ -25,10 +25,10 @@ function log(text){
 }
 
 // ------------------------------ Drink class -------------------------------------------------------
-const drink_num_to_integrate = 6;
+const drink_num_to_integrate = 4;
 const drink_buffersize = 20;
 const drink_rel_size_of_upper_lower_gap = 5;
-const drink_speed_to_target_privce = 5; 		//higher means slower
+const drink_speed_to_target_privce = 2; 		//higher means slower
 const drink_price_buffer_size = 20;
 
 class Drink {
@@ -44,6 +44,7 @@ class Drink {
 		this.buffer_next_count = 0;
 
 		this.buffer = [];
+		this.stockrequestBuffer = [];
 		this.num_to_integrate = drink_num_to_integrate;
 		this.buffersize = drink_buffersize;
 
@@ -95,7 +96,7 @@ class Drink {
 
 	updatePriceBuffer(){
 		let new_p = this.getPrice();	//calls everything to make the new price
-
+		this.price = new_p;
 		this.price_buffer.push(new_p);
 
 		if (this.price_buffer_size < this.price_buffer.length){
@@ -116,7 +117,7 @@ class Drink {
 	getBorder(f){
 		let numofup = Math.round(this.buffer.length/drink_rel_size_of_upper_lower_gap);
 		let l = [];
-		let copy = [...this.buffer];
+		let copy = [...this.stockrequestBuffer];
 
 		for (let i = 0; i < numofup; i++){
 			let num = f(...copy);
@@ -135,6 +136,10 @@ class Drink {
 	getPrice(){
 		
 		let stockrequest = this.getBufferValue();
+		this.stockrequestBuffer.push(stockrequest);
+		if (this.stockrequestBuffer.length >= drink_buffersize){
+			this.stockrequestBuffer.shift();
+		}
 
 		if (stockrequest < 0){
 			stockrequest = 0;
