@@ -6,7 +6,7 @@ const { spawn } = require("child_process");
 
 let chartServerClients = [];
 
-const chart_path = "chart.html";
+const chart_path = "C:/Users/l.hefti/Desktop/StockWebside/chart.html";
 
 const chartserver = http.createServer((req, res) => {
     if (req.url === "/events"){
@@ -61,7 +61,7 @@ chartserver.listen(chartPort, "0.0.0.0", ()=> {
 //barsiede server setup --------------------------------------------------------------------------------
 let barSErverClients = [];
 
-const bar_location = "bar.html";
+const bar_location = "C:/Users/l.hefti/Desktop/StockWebside/bar.html";
 
 const barserver = http.createServer((req, res) => {
 
@@ -111,7 +111,7 @@ barserver.listen(barport,"0.0.0.0", ()=> {
 //stockcenter program setup ----------------------------------------------------------------------------
 
 const surce_node = "node.exe"
-const stock_center = spawn(surce_node, ["stockcenter.js"]);
+const stock_center = spawn(surce_node, ["C:/Users/l.hefti/Desktop/StockWebside/stockcenter.js"]);
 
 let init_stock_c = false;
 stock_center.stdout.on("data", (data) => {
@@ -137,8 +137,8 @@ stock_center.stdout.on("data", (data) => {      //should be always acive
     }
 });
 */
-const Time_to_res = 1000;
-const newTime = 1000 * 60;
+const Time_to_res = 1000 * 2;
+const newTime = 1000 * 30;
 
 async function pingStockCenter(){
     return new Promise((resolve) =>{

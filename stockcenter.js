@@ -21,11 +21,11 @@ function round50(value){
 }
 
 function log(text){
-	fs2.appendFileSync("serverLog.txt", text + "\n");
+	fs2.appendFileSync("C:/Users/l.hefti/Desktop/StockWebside/serverLog.txt", text + "\n");
 }
 
 // ------------------------------ Drink class -------------------------------------------------------
-const drink_num_to_integrate = 3;
+const drink_num_to_integrate = 6;
 const drink_buffersize = 20;
 const drink_rel_size_of_upper_lower_gap = 5;
 const drink_speed_to_target_privce = 5; 		//higher means slower
@@ -39,7 +39,7 @@ class Drink {
 		this.minPrice = minPrice;
 		this.targetPrice = targetPrice;
 
-		if (maxPrice < minPrice){console.log("error min price is bigger than max price " + minPrice +  " " + maxPrice);}
+		if (maxPrice < minPrice){console.log("error min price is bigger than max price");}
 
 		this.buffer_next_count = 0;
 
@@ -80,11 +80,13 @@ class Drink {
 
 		let upper_boundery = this.buffer.length;
 
+		let numtodiv = 0;
 		for(let i = lower_boundery; i < upper_boundery; i++){
-			sum += this.buffer[i];
+			sum += this.buffer[i] * i*i;
+			numtodiv += i*i;
 		}
 
-		let numtodiv = upper_boundery-lower_boundery;
+		//let numtodiv = upper_boundery-lower_boundery;
 		if (numtodiv == 0){numtodiv = 1;}
 
 		let s = sum / numtodiv;
@@ -151,6 +153,7 @@ class Drink {
 		} 
 		var upperV = upperB[Math.round(upperB.length/2-0.1)]; //formel to so 0.5 will be 0
 		var lowerV = lowerB[Math.round(lowerB.length/2-0.1)];
+		lowerV = 0;
 
 		if (lowerV == upperV){
 			lowerV = 0;
@@ -194,9 +197,9 @@ class Drink {
 	}
 }
 
-const SM_p1 = "stocks.txt";
-const SM_p2 = "stocks2.txt";
-const SM_backup = "backup.txt";
+const SM_p1 = "C:/Users/l.hefti/Desktop/StockWebside/stocks.txt";
+const SM_p2 = "C:/Users/l.hefti/Desktop/StockWebside/stocks2.txt";
+const SM_backup = "C:/Users/l.hefti/Desktop/StockWebside/backup.txt";
 const SM_time_buffer_size = 20;
 
 class StockMarket {
@@ -217,13 +220,11 @@ class StockMarket {
 
 		data = data.replace(" ", "");
 		data = data.replace("\r", "");
-		data = data.replace("\t", "");
 
 		let lines = data.split("\n");
 
 		for (let line of lines){
 			let fragments = line.split(",");
-			//console.log(fragments)
 
 			// name, startprice, minprice, maxprice, targetprice
 			this.stocks.push(new Drink(fragments[0], 
@@ -241,8 +242,6 @@ class StockMarket {
 		let data = await fs.readFile(SM_backup, "utf8");
 
 		data = data.replace(" ", "");
-		data = data.replace("\t", "");
-
 		let lines = data.split("\n");
 
 		if (lines.length < 1 ){
@@ -279,7 +278,6 @@ class StockMarket {
 
 		data = data.replace(" ", "");
 		data = data.replace("\r", "");
-		data = data.replace("\t", "");
 
 		let lines = data.split("\n");
 

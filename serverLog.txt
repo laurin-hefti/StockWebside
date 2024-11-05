@@ -1,4 +1,77 @@
-
+server init
+Relative Price Mode : true
+Relative Price Mode : false
+server init
+found not drink : wasser
+found not drink : cola
+found not drink : cola
+found not drink : cola
+found not drink : cola
+found not drink : cola
+found not drink : cola
+found not drink : cola
+found not drink : cola
+found not drink : cola
+found not drink : cola
+found not drink : cola
+found not drink : cola
+found not drink : cola
+found not drink : cola
+found not drink : cola
+found not drink : cola
+found not drink : cola
+found not drink : cola
+found not drink : cola
+found not drink : cola
+found not drink : cola
+found not drink : cola
+found not drink : cola
+found not drink : cola
+found not drink : cola
+found not drink : cola
+found not drink : cola
+found not drink : cola
+found not drink : cola
+found not drink : cola
+found not drink : cola
+found not drink : cola
+found not drink : cola
+found not drink : cola
+found not drink : cola
+found not drink : cola
+found not drink : cola
+found not drink : cola
+found not drink : cola
+found not drink : cola
+found not drink : cola
+found not drink : cola
+found not drink : cola
+found not drink : citro
+found not drink : citro
+found not drink : citro
+found not drink : citro
+found not drink : citro
+found not drink : wasser
+found not drink : wasser
+found not drink : wasser
+found not drink : wasser
+found not drink : cola
+found not drink : cola
+found not drink : cola
+found not drink : cola
+found not drink : cola
+found not drink : cola
+found not drink : cola
+found not drink : cola
+found not drink : cola
+found not drink : cola
+found not drink : cola
+found not drink : cola
+found not drink : cola
+reaload Drink List
+change Drink Path : C:/Users/l.hefti/Desktop/StockWebside/stocks2.txt
+change Drink Path : C:/Users/l.hefti/Desktop/StockWebside/stocks.txt
+Relative Price Mode : true
 server init
 server init
 server init
@@ -7,9 +80,6 @@ server init
 server init
 server init
 server init
-command not found : 
-server init
-command not found : 
 server init
 server init
 server init

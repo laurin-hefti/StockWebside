@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <title> Drinks </title>
+
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
+    <style>
+        :root {
+            --text-color: white;
+            --background-color: black;
+        }
+        
+        h1 {
+            color: var(--text-color);
+            text-align: center;
+        }
+
+        h2{
+            color: var(--text-color);
+            text-align: center;
+        }
+
+        #drinkList {
+            display: flex;
+            justify-content: center;
+            /*flex-direction: center; */
+        }
+        
+        h4 {
+            color: var(--text-color);
+            text-align: right;
+            margin: 20px;
+        }
+    </style>
+
+</head>
+<body style = "background-color: var(--background-color);">
+
+    <h1 class="container mt-5">Drink chart</h1>
+
+    <div class="container mt-5">
+        <div id="linechart" class="my-4"></div>
+    </div>
+
+    <h2>
+        Getränke Liste
+    </h2>
+
+    <div id="drinkList"></div>
+
+    <script>
+        const root = document.documentElement;
+
+        let text_color = getComputedStyle(root).getPropertyValue("--text-color");
+        let background_color = getComputedStyle(root).getPropertyValue("--background-color");
+        // setup the diagram
+        var stockData = {};
+
+        var layout = {
+            //title: "Preise",
+            xaxis: {title: "Zeit", color: text_color},
+            yaxis: {title: "Price", color: text_color},
+
+            plot_bgcolor: background_color,
+            paper_bgcolor: background_color,
+
+            font: {color: text_color}
+        };
+
+        var config = {
+            displayModeBar: false
+        };
+
+        Plotly.newPlot("linechart", [], layout, config);
+
+        function updateChart(){
+            var traces = [];
+            for(var stock in stockData){
+                traces.push({
+                    x: stockData[stock].dates,
+                    y: stockData[stock].prices,
+                    type: "scatter",
+                    mode: "line",
+                    name: stock,
+                    line: {width: 2}
+                });
+            }
+
+            Plotly.react("linechart", traces, layout, config);
+        }
+
+        //get data from the stockmarket server and put it in the stockData
+        function setData(){
+            fetch("http://localhost:3001").then(response => {
+                if (!response.ok) {
+                    
+                } else {
+                    return response.json();
+                }
+            }).then(data => {
+                stockData = {};
+                let drinksListDiv = document.getElementById("drinkList");
+
+                data.drinks.forEach(drink => {
+                    stockData[drink.name] = {name: drink.name, prices: drink.prices, times: drink.times};
+                    
+                    let drinkDiv = document.createElement("h4");
+                    drinkDiv.textContent = drink.name + ": " + drink.prices[drink.prices.length - 1] + " Fr.";
+                    drinksListDiv.appendChild(drinkDiv);
+                });
+
+                updateChart();
+            });
+        }
+
+        setData();
+
+        const run = false;
+        while (run){
+            setData();
+
+            setTimeout(() => {
+
+            }, 60000); //one second
+        }
+    </script>
+</body>

@@ -4,11 +4,11 @@ from selenium.webdriver.common.keys import Keys
 import time
 from random import randint
 
-driver_path = "msedgedriver.exe"
+driver_path = "C:/Users/l.hefti/Downloads/edgedriver_win64/msedgedriver.exe"
 driver = webdriver.Edge(driver_path)
 
 """
-driver.get("ek-09:3002")
+driver.get("http://localhost:3002")
 
 time.sleep(2);
 
@@ -19,7 +19,7 @@ drinks = drink_list.find_elements(By.XPATH, "./*")
 drinkButtons = [drink.find_elements(By.XPATH, "./*") for drink in drinks]
 """
 
-formula_for_ev = lambda x: 30
+formula_for_ev = lambda x: 15
 t = 0
 
 
@@ -33,7 +33,7 @@ def execute(rand_nums):
 
 def run():
     global t
-    random_num_by = [randint(10, formula_for_ev(t)) for _ in range(len(drinks))]
+    random_num_by = [randint(0, formula_for_ev(t)) for _ in range(len(drinks))]
     #random_num_by = [20 for _ in range(len(drinks))]
 
     execute(random_num_by)
@@ -45,7 +45,7 @@ def run():
 
 for _ in range(200):
     try:
-        driver.get("ek-09:3002")
+        driver.get("http://localhost:3002")
 
         time.sleep(2);
 
