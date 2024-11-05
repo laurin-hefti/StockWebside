@@ -25,10 +25,10 @@ function log(text){
 }
 
 // ------------------------------ Drink class -------------------------------------------------------
-const drink_num_to_integrate = 5;
+const drink_num_to_integrate = 4;
 const drink_buffersize = 20;
 const drink_rel_size_of_upper_lower_gap = 5;	//rela higher means lower
-const drink_speed_to_target_privce = 5; 		//higher means slower
+const drink_speed_to_target_privce = 2; 		//higher means slower
 const drink_price_buffer_size = 20;
 
 class Drink {
@@ -44,6 +44,7 @@ class Drink {
 		this.buffer_next_count = 0;
 
 		this.buffer = [];
+		this.stockrequestBuffer = [];
 		this.num_to_integrate = drink_num_to_integrate;
 		this.buffersize = drink_buffersize;
 
@@ -80,11 +81,13 @@ class Drink {
 
 		let upper_boundery = this.buffer.length;
 
+		let numtodiv = 0;
 		for(let i = lower_boundery; i < upper_boundery; i++){
-			sum += this.buffer[i] ;// * ((i+1)/(upper_boundery+1));				//may not
+			sum += this.buffer[i] * i * i;				//may not
+			numtodiv += i*i;
 		}
 
-		let numtodiv = upper_boundery-lower_boundery;
+		//let numtodiv = upper_boundery-lower_boundery;
 		if (numtodiv <= 0){numtodiv = 1;}
 
 		let s = sum / numtodiv;
@@ -93,6 +96,7 @@ class Drink {
 
 	updatePriceBuffer(){
 		let new_p = this.getPrice();	//calls everything to make the new price
+		this.price = new_p;
 
 		this.price_buffer.push(new_p);
 
@@ -114,7 +118,7 @@ class Drink {
 	getBorder(f){
 		let numofup = Math.round(this.buffer.length/drink_rel_size_of_upper_lower_gap);
 		let l = [];
-		let copy = [...this.buffer];
+		let copy = [...this.stockrequestBuffer];
 
 		for (let i = 0; i < numofup; i++){
 			let num = f(...copy);
@@ -133,7 +137,11 @@ class Drink {
 	getPrice(){
 		
 		let stockrequest = this.getBufferValue();
-		log(stockrequest); 		//delet this
+		this.stockrequestBuffer.push(stockrequest);
+		if (this.stockrequestBuffer.length >= drink_buffersize){
+			this.stockrequestBuffer.shift();
+		}
+
 
 		if (stockrequest < 0){
 			stockrequest = 0;
@@ -152,6 +160,7 @@ class Drink {
 		} 
 		var upperV = upperB[Math.round(upperB.length/2-0.1)]; //formel to so 0.5 will be 0
 		var lowerV = lowerB[Math.round(lowerB.length/2-0.1)];
+		lowerV = 0;
 
 		if (lowerV == upperV){
 			lowerV = 0;
