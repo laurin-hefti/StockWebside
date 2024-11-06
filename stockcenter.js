@@ -137,6 +137,11 @@ class Drink {
 	getPrice(){
 		
 		let stockrequest = this.getBufferValue();
+
+		if (stockrequest < this.stockrequestBuffer[this.stockrequestBuffer.length-1]/2){
+			stockrequest += this.stockrequestBuffer[this.stockrequestBuffer.length-1]/2;
+ 		} // new code for slower decreasing
+
 		this.stockrequestBuffer.push(stockrequest);
 		if (this.stockrequestBuffer.length >= drink_buffersize){
 			this.stockrequestBuffer.shift();
@@ -438,6 +443,14 @@ class StockMarket {
 		}
 	}
 
+	resetBuffer(){
+		for (let s of this.stocks){
+			for(let i = this.stockrequestBuffer.length - 5; i < this.stockrequestBuffer.length; i++){
+				s.stockrequestBuffer[i] = s.stockrequestBuffer[s.stockrequestBuffer.length-1]/2;
+			}
+		}
+	}
+
 	creatingJsonData(){
 		let data = {drinks: []};
 
@@ -592,6 +605,11 @@ sm.fullinit().then(() => {
 			}
 			log("Relative Price Mode : " + relativPrices);
 			console.log("reload");
+		}
+
+		else if (data = "resetBuffer"){
+			sm.resetBuffer();
+			console.log("1");
 		}
 
 		else if (slices[0] == "buy"){

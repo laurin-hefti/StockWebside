@@ -258,7 +258,7 @@ const scserver = http.createServer(async (req, res) => {
         } catch {
             res.writeHead(500);
             res.end();
-        }
+        }cmd
 
         if (data.toString() == "0"){
             res.writeHead(500);
